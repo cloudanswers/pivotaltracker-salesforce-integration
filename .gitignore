@@ -1,0 +1,5 @@
+*.sublime-project
+*.sublime-settings
+*.sublime-workspace
+config
+apex-scripts
