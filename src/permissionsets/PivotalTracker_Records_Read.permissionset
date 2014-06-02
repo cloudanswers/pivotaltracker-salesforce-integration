@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <applicationVisibilities>
+        <application>PivotalTracker</application>
+        <visible>false</visible>
+    </applicationVisibilities>
+    <classAccesses>
+        <apexClass>PivotalTracker</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>PivotalTrackerSetup</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>PivotalTrackerSetupTests</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>PivotalTrackerSync</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>PivotalTrackerSyncScheduler</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>PivotalTrackerSyncTests</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>PivotalTrackerTests</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <label>PivotalTracker Records Read</label>
+    <pageAccesses>
+        <apexPage>PivotalTrackerSetup</apexPage>
+        <enabled>false</enabled>
+    </pageAccesses>
+    <tabSettings>
+        <tab>PivotalTracker_Story__c</tab>
+        <visibility>None</visibility>
+    </tabSettings>
+</PermissionSet>
