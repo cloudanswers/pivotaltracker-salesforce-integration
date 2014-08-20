@@ -60,8 +60,9 @@ global with sharing class PivotalTracker {
     public class PivotalTrackerStory {
         public String kind;
         public Integer id;
-        public Double created_at;
-        public Double updated_at;
+        public DateTime created_at;
+        public DateTime updated_at;
+        public DateTime accepted_at;
         public String story_type;
         public String name;
         public String description;
@@ -69,8 +70,30 @@ global with sharing class PivotalTracker {
         public Integer requested_by_id;
         public Integer project_id;
         public String url;
-        public List<String> owner_ids;
-        public list<PivotalTrackerLabel> labels;
+        public List<Integer> owner_ids;
+        public List<PivotalTrackerLabel> labels;
+        public Integer owned_by_id;
+
+
+    }
+
+    public class PivotalTrackerStoryResult{
+        public List<PivotalTrackerStory> stories;
+        //variable for maintaining state
+        public Integer offset = 0;
+        public PivotalTracker tracker;
+        public Integer projectId;
+
+
+        public PivotalTrackerStoryResult next() {
+            stories = (List<PivotalTrackerStory>)JSON.deserialize(
+                            tracker.get('https://www.pivotaltracker.com/services/v5/projects/'+projectId+'/stories?limit='+STORY_LIMIT+'&offset='+offset), 
+                            List<PivotalTrackerStory>.class
+                        );
+            offset = offset + STORY_LIMIT;
+
+            return this;
+        }
     }
 
     public class PivotalTrackerLabel {
@@ -78,8 +101,8 @@ global with sharing class PivotalTracker {
         public Integer project_id;
         public String kind;
         public String name;
-        public Double created_at;
-        public Double updated_at;
+        public DateTime created_at;
+        public DateTime updated_at;
     }
     
     public class PivotalTrackerProject{
