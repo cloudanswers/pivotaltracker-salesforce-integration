@@ -2,10 +2,19 @@ global with sharing class PivotalTracker {
     private static final integer STORY_LIMIT = 50;
     private String apiToken;
     private Integer projectId;
+    private List<Integer> projectIds;
+    private Integer index = 0;
 
     public PivotalTracker(String apiToken, Integer projectId) {
         this.apiToken = apiToken;
-        this.projectId = projectId;
+        this.projectIds = new List<Integer>{projectId};
+        next();
+    }
+
+    public PivotalTracker(String apiToken,List<Integer> projectIds){
+        this.apiToken = apiToken;
+        this.projectIds = projectIds;
+        next();
     }
 
     public PivotalTrackerStoryResult getStories() {
@@ -25,9 +34,21 @@ global with sharing class PivotalTracker {
 
     public List<PivotalTrackerProject> getProject(){
         return (List<PivotalTrackerProject>)JSON.deserialize(
-            get('https://www.pivotaltracker.com/services/v5/projects'+projectId),
+            get('https://www.pivotaltracker.com/services/v5/projects'),
             List<PivotalTrackerProject>.class
         );
+    }
+
+    public Boolean hasNext(){
+        return (index < projectIds.size());
+    }
+
+    public void next(){
+        if(index < projectIds.size()){
+            projectId = projectIds[index];
+            index++;
+        }
+
     }
 
 
@@ -173,7 +194,7 @@ global with sharing class PivotalTracker {
                 Automatic_Planning__c = this.automatic_planning,
                 Enable_Tasks__c = this.enable_tasks,
                 Start_Date__c = this.start_date,
-                Time_Zone__c = this.time_zone,
+                //Time_Zone__c = this.time_zone,
                 Velocity_Averaged_Over__c = this.velocity_averaged_over,
                 Shown_Iterations_Start_Time__c = this.shown_iterations_start_time,
                 Start_Time__c = this.start_time,
