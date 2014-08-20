@@ -37,8 +37,4 @@
         <apexPage>PivotalTrackerSetup</apexPage>
         <enabled>false</enabled>
     </pageAccesses>
-    <tabSettings>
-        <tab>PivotalTracker_Story__c</tab>
-        <visibility>None</visibility>
-    </tabSettings>
 </PermissionSet>
