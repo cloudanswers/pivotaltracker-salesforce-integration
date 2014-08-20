@@ -64,6 +64,7 @@ global with sharing class PivotalTracker {
         public DateTime created_at;
         public DateTime updated_at;
         public DateTime accepted_at;
+        public Integer estimate;
         public String story_type;
         public String name;
         public String description;
@@ -75,6 +76,21 @@ global with sharing class PivotalTracker {
         public List<PivotalTrackerLabel> labels;
         public Integer owned_by_id;
 
+        public Pivotal_Story__c toSobject(){
+            return new Pivotal_Story__c(
+                        Accepted_at__c = this.accepted_at,
+                        Created_At__c = this.created_at,
+                        Updated_At__c = this.updated_at,
+                        Current_State__c = this.current_state,
+                        Description__c = this.description,
+                        Estimate__c = this.estimate,
+                        Project_Id__c = this.project_id,
+                        Story_Type__c = this.story_type,
+                        Name = this.name,
+                        Kind__c = this.kind
+
+                    );
+        }
 
     }
 
