@@ -34,9 +34,14 @@ global with sharing class PivotalTrackerSync implements Database.Batchable<Strin
     }
 
     global void finish(Database.BatchableContext BC) {
-    	if (storiesFinished || actions.size() >= 50) {
+    	if ((storiesFinished || actions.size() >= 50) && tracker.hasNext() == false) {
             sendErrorEmail();
         } else {
+            if(tracker.hasNext()){
+            	tracker.next();
+            	currentStoryResult = null;
+            }
+
             PivotalTrackerSync p = new PivotalTrackerSync(tracker);
             p.actions = actions.clone();
             // remove the sync actions not related to the time entries
@@ -69,6 +74,7 @@ global with sharing class PivotalTrackerSync implements Database.Batchable<Strin
             mail.setSenderDisplayName('Pivotal Salesforce Sync');
             mail.setSubject('Pivotal Salesforce Sync Errors');
             String body = 'Errors: ';
+            System.debug('XXXXXXX:'+errors);
             for (String e : errors) {
                 body += '\n - ' + e;
             }
@@ -83,11 +89,18 @@ global with sharing class PivotalTrackerSync implements Database.Batchable<Strin
     	stories.clear();
     	for (String s : scope) {
     		if(s == 'projects'){
-
+    			/*
+    			for(PivotalTracker.PivotalTrackerProject ptp : tracker.getProject()){
+    				projects.add(ptp.toSobject());
+    			}
+    			*/
     		}
     		else{
     			if(currentStoryResult == NULL){
     				currentStoryResult = tracker.getStories();
+    			}
+    			else{
+    				currentStoryResult = currentStoryResult.next();
     			}
 
     			for(PivotalTracker.PivotalTrackerStory p : currentStoryResult.stories){
