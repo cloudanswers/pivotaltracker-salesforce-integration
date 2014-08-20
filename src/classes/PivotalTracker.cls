@@ -158,7 +158,35 @@ global with sharing class PivotalTracker {
         public List<Integer> iteration_override_numbers;
         public Datetime created_at;
         public DateTime updated_at;
-        public String kind;       
+        public String kind;      
+
+        public Pivotal_Project__c toSobject(){
+            return new Pivotal_Project__c(
+                Project_Id__c = this.id,
+                Name = this.name,
+                Version__c  = this.version,
+                Iteration_Length__c = this.iteration_length,
+                Week_Start_Day__c = this.week_start_day,
+                Point_Scale__c = this.point_scale,
+                Point_Scale_Is_Custom__c = this.point_scale_is_custom,
+                Bugs_and_Chores_are_Estimatable__c = this.bugs_and_chores_are_estimatable,
+                Automatic_Planning__c = this.automatic_planning,
+                Enable_Tasks__c = this.enable_tasks,
+                Start_Date__c = this.start_date,
+                Time_Zone__c = this.time_zone,
+                Velocity_Averaged_Over__c = this.velocity_averaged_over,
+                Shown_Iterations_Start_Time__c = this.shown_iterations_start_time,
+                Start_Time__c = this.start_time,
+                Number_of_Done_Iterations_to_Show__c = this.number_of_done_iterations_to_show,
+                Has_Google_Domain__c = this.has_google_domain,
+                Description__c = this.description,
+                Profile_Content__c = this.profile_content,
+                Enable_Incoming_Emails__c = this.enable_incoming_emails,
+                Initial_velocity__c = this.initial_velocity,
+                Current_Iteration_Number__c = this.current_iteration_number,
+                Current_Velocity__c = this.current_velocity
+            );
+        } 
     }
 
     public class PivotalTrackerEpic{
