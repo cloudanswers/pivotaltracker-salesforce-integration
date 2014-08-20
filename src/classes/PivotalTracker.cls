@@ -1,5 +1,5 @@
-public with sharing class PivotalTracker {
-
+global with sharing class PivotalTracker {
+    private static final integer STORY_LIMIT = 500;
     private String apiToken;
     private Integer projectId;
 
