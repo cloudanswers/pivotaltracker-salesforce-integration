@@ -17,28 +17,15 @@
         <name>ApexTrigger</name>
     </types>
     <types>
-        <members>*</members>
-        <name>CustomApplication</name>
-    </types>
-    <types>
         <members>PivotalTracker__c</members>
+        <members>Pivotal_Project__c</members>
+        <members>Pivotal_Story__c</members>
+        <members>Pivotal_Tracker__c</members>
         <name>CustomObject</name>
-    </types>
-    <types>
-        <members>*</members>
-        <name>CustomTab</name>
-    </types>
-    <types>
-        <members>*</members>
-        <name>PermissionSet</name>
-    </types>
-    <types>
-        <members>*</members>
-        <name>RemoteSiteSetting</name>
     </types>
     <types>
         <members>*</members>
         <name>StaticResource</name>
     </types>
-    <version>29.0</version>
+    <version>28.0</version>
 </Package>

@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <enableActivities>false</enableActivities>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>false</enableHistory>
+    <enableReports>false</enableReports>
+    <fields>
+        <fullName>Account_Id__c</fullName>
+        <externalId>false</externalId>
+        <label>Account Id</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Atom_Enabled__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>When true, Tracker allows people to subscribe to the Atom (RSS, XML) feed of project changes.</description>
+        <externalId>false</externalId>
+        <label>Atom Enabled</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Automatic_Planning__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Automatic Planning</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Bugs_and_Chores_are_Estimatable__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Bugs and Chores are Estimatable</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Created_At__c</fullName>
+        <externalId>false</externalId>
+        <label>Created At</label>
+        <required>false</required>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>Current_Iteration_Number__c</fullName>
+        <externalId>false</externalId>
+        <label>Current Iteration Number</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Current_Velocity__c</fullName>
+        <externalId>false</externalId>
+        <label>Current Velocity</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Database_id_of_the_project__c</fullName>
+        <description>Database id of the project.</description>
+        <externalId>false</externalId>
+        <label>Id</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Description__c</fullName>
+        <externalId>false</externalId>
+        <label>Description</label>
+        <required>false</required>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Enable_Incoming_Emails__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Enable Incoming Emails</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Enable_Tasks__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Enable Tasks</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Has_Google_Domain__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Has Google Domain</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Initial_Velocity__c</fullName>
+        <externalId>false</externalId>
+        <label>Initial Velocity</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Iteration_Length__c</fullName>
+        <description>The number of weeks in an iteration.</description>
+        <externalId>false</externalId>
+        <label>Iteration Length</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Kind__c</fullName>
+        <externalId>false</externalId>
+        <label>Kind</label>
+        <length>100</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Number_of_Done_Iterations_to_Show__c</fullName>
+        <externalId>false</externalId>
+        <label>Number of Done Iterations to Show</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Point_Scale_Is_Custom__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Point Scale Is Custom</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Point_Scale__c</fullName>
+        <description>The specification for the &quot;point scale&quot; available for entering story estimates within the project. It is specified as a comma-delimited series of values--any value that would be acceptable on the Project Settings page of the Tracker web application may be used here. If an exact match to one of the built-in point scales, the project will use that point scale. If another comma-separated point-scale string is passed, it will be treated as a &quot;custom&quot; point scale. The built-in scales are &quot;0,1,2,3&quot;, &quot;0,1,2,4,8&quot;, and &quot;0,1,2,3,5,8&quot;.</description>
+        <externalId>false</externalId>
+        <label>Point Scale</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Profile_Content__c</fullName>
+        <externalId>false</externalId>
+        <label>Profile Content</label>
+        <length>32768</length>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Public__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>When true, Tracker will allow any user on the web to view the content of the project.</description>
+        <externalId>false</externalId>
+        <label>Public</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Shown_Iterations_Start_Time__c</fullName>
+        <externalId>false</externalId>
+        <label>Shown Iterations Start Time</label>
+        <required>false</required>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>Start_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Start Date</label>
+        <required>false</required>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Start_Time__c</fullName>
+        <externalId>false</externalId>
+        <label>Start Time</label>
+        <required>false</required>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>Time_Zone__c</fullName>
+        <externalId>false</externalId>
+        <label>Time Zone</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Updated_At__c</fullName>
+        <externalId>false</externalId>
+        <label>Updated At</label>
+        <required>false</required>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>Velocity_Averaged_Over__c</fullName>
+        <externalId>false</externalId>
+        <label>Velocity Averaged Over</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Version__c</fullName>
+        <description>A counter that is incremented each time something is changed within a project. The project version is used to track whether a client is &apos;up to date&apos; with respect to the current content of the project on the server, and to identify what updates have to be made to the client&apos;s local copy of the project (if it stores one) to re-synchronize it with the server.</description>
+        <externalId>false</externalId>
+        <label>Version</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Week_Start_Day__c</fullName>
+        <externalId>false</externalId>
+        <label>Week Start Day</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Sunday</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Monday</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Tuesday</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Wednesday</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Thursday</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Friday</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Saturday</fullName>
+                <default>false</default>
+            </picklistValues>
+            <sorted>false</sorted>
+        </picklist>
+        <type>Picklist</type>
+    </fields>
+    <label>Pivotal Project</label>
+    <listViews>
+        <fullName>All</fullName>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
+    <nameField>
+        <label>Pivotal Project Name</label>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>Pivotal Projects</pluralLabel>
+    <searchLayouts/>
+    <sharingModel>ReadWrite</sharingModel>
+</CustomObject>
