@@ -8,11 +8,11 @@ global with sharing class PivotalTracker {
         this.projectId = projectId;
     }
 
-    public List<PivotalTrackerStory> getStories() {
-        return (List<PivotalTrackerStory>)JSON.deserialize(
-            get('https://www.pivotaltracker.com/services/v5/projects/'+projectId+'/stories'), 
-            List<PivotalTrackerStory>.class
-        );
+    public PivotalTrackerStoryResult getStories() {
+        PivotalTrackerStoryResult res = new PivotalTrackerStoryResult();
+        res.projectId = this.projectId;
+        res.tracker =this;
+        return res.next();
     }
     
 
@@ -52,6 +52,7 @@ global with sharing class PivotalTracker {
         if (res.getStatusCode() != 200) {
             throw new HttpException('Invalid status code ' + res.getStatusCode() + ' for ' + url);
         }
+        System.debug(res.getBody());
         return res.getBody();
     }
 
