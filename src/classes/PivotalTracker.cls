@@ -88,7 +88,8 @@ global with sharing class PivotalTracker {
                         Story_Type__c = this.story_type,
                         Name = this.name,
                         Kind__c = this.kind,
-                        Story_Id__c = this.id
+                        Story_Id__c = this.id,
+                        Story_URL__c = this.url
                     );
         }
 
