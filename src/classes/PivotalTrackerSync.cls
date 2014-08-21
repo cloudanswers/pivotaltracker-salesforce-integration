@@ -2,6 +2,7 @@ global with sharing class PivotalTrackerSync implements Database.Batchable<Strin
 	public List<String> actions;
     private Database.DMLOptions dmo;
     private PivotalTracker tracker;
+    @TestVisible
     private Boolean storiesFinished = false;
     @TestVisible
     private Boolean didScheduleAdditionalBatch;
@@ -12,7 +13,12 @@ global with sharing class PivotalTrackerSync implements Database.Batchable<Strin
     public List<String> errors = new List<String>();
 
     global PivotalTrackerSync(){
-        sync();
+        Pivotal_Tracker__c config = new Pivotal_Tracker__c(Name = 'default');
+        if(config != NULL){
+            PivotalTracker tracker = new PivotalTracker(config.API_Token__c);
+            PivotalTrackerSync p = new PivotalTrackerSync(tracker);
+            Database.executeBatch(p, 10);
+        }
     }
 
     global PivotalTrackerSync(PivotalTracker tracker) {
@@ -72,9 +78,6 @@ global with sharing class PivotalTrackerSync implements Database.Batchable<Strin
             Type t = Type.forName('PivotalTrackerSync'); 
             Database.Batchable<String> batchClass = ((Database.Batchable<String>) t.newInstance());
             Database.executeBatch(batchClass,10);
-        }
-        else{
-            return;
         }
     }
 
