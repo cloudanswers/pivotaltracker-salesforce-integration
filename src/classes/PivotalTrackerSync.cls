@@ -11,6 +11,10 @@ global with sharing class PivotalTrackerSync implements Database.Batchable<Strin
     private List<Pivotal_Story__c> stories = new List<Pivotal_Story__c>();
     public List<String> errors = new List<String>();
 
+    global PivotalTrackerSync(){
+        sync();
+    }
+
     global PivotalTrackerSync(PivotalTracker tracker) {
         dmo = new Database.DMLOptions();
         dmo.allowFieldTruncation = true;
@@ -59,6 +63,18 @@ global with sharing class PivotalTrackerSync implements Database.Batchable<Strin
                 // the per transaction govorner for callouts
                 Database.executeBatch(p, 10);
             }
+        }
+    }
+
+    public static void sync(){
+        Pivotal_Tracker__c config = new Pivotal_Tracker__c(Name = 'default');
+        if(config != NULL){
+            Type t = Type.forName('PivotalTrackerSync'); 
+            Database.Batchable<String> batchClass = ((Database.Batchable<String>) t.newInstance());
+            Database.executeBatch(batchClass,10);
+        }
+        else{
+            return;
         }
     }
 
