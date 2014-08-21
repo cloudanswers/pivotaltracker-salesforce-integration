@@ -9,18 +9,8 @@
         <externalId>false</externalId>
         <label>API Token</label>
         <length>255</length>
-        <required>false</required>
+        <required>true</required>
         <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Project_Id__c</fullName>
-        <externalId>false</externalId>
-        <label>Project Id</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>0</scale>
-        <type>Number</type>
         <unique>false</unique>
     </fields>
     <label>PivotalTracker</label>
