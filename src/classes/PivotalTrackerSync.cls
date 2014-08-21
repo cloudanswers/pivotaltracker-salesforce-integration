@@ -104,7 +104,9 @@ global with sharing class PivotalTrackerSync implements Database.Batchable<Strin
     			}
 
     			for(PivotalTracker.PivotalTrackerStory p : currentStoryResult.stories){
-    				stories.add(p.toSobject());
+    				Pivotal_Story__c ps = p.toSobject();
+    				ps.setOptions(dmo);
+    				stories.add(ps);
     			}
 
     			storiesFinished = stories.isEmpty();
