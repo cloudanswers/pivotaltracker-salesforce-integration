@@ -137,18 +137,6 @@
         <type>TextArea</type>
     </fields>
     <fields>
-        <fullName>Id__c</fullName>
-        <description>Database id of the story.</description>
-        <externalId>false</externalId>
-        <label>Id</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>0</scale>
-        <trackHistory>false</trackHistory>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Integration_Id__c</fullName>
         <description>ID of the integration API that is linked to this story. In API responses, this attribute may be integration_id or integration.</description>
         <externalId>false</externalId>
@@ -175,17 +163,28 @@
         <description>Name of the story.</description>
         <externalId>false</externalId>
         <label>Name</label>
-        <length>5000</length>
+        <required>false</required>
         <trackHistory>false</trackHistory>
-        <type>LongTextArea</type>
-        <visibleLines>2</visibleLines>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Pivotal_Project__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Pivotal Project</label>
+        <referenceTo>Pivotal_Project__c</referenceTo>
+        <relationshipLabel>Pivotal Stories</relationshipLabel>
+        <relationshipName>Pivotal_Stories</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Lookup</type>
     </fields>
     <fields>
         <fullName>Project_Id__c</fullName>
         <description>Id of the project.</description>
         <externalId>false</externalId>
         <label>Project Id</label>
-        <precision>18</precision>
+        <precision>8</precision>
         <required>false</required>
         <scale>0</scale>
         <trackHistory>false</trackHistory>
@@ -197,6 +196,18 @@
         <description>The id of the person who requested the story. In API responses, this attribute may be requested_by_id or requested_by.</description>
         <externalId>false</externalId>
         <label>Requested by Id</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Story_Id__c</fullName>
+        <description>Database id of the story.</description>
+        <externalId>true</externalId>
+        <label>Story Id</label>
         <precision>18</precision>
         <required>false</required>
         <scale>0</scale>
@@ -249,6 +260,10 @@
     <label>Pivotal Story</label>
     <listViews>
         <fullName>All</fullName>
+        <columns>NAME</columns>
+        <columns>Name__c</columns>
+        <columns>Estimate__c</columns>
+        <columns>Story_Url__c</columns>
         <filterScope>Everything</filterScope>
         <label>All</label>
     </listViews>

@@ -97,17 +97,6 @@
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Database_id_of_the_project__c</fullName>
-        <description>Database id of the project.</description>
-        <externalId>false</externalId>
-        <label>Id</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>0</scale>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Description__c</fullName>
         <externalId>false</externalId>
         <label>Description</label>
@@ -199,6 +188,17 @@
         <length>32768</length>
         <type>LongTextArea</type>
         <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Project_Id__c</fullName>
+        <description>Database id of the project.</description>
+        <externalId>true</externalId>
+        <label>Project Id</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <type>Number</type>
+        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Public__c</fullName>
