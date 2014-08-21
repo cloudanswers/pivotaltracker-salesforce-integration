@@ -123,7 +123,8 @@ global with sharing class PivotalTracker {
                         Kind__c = this.kind,
                         Story_Id__c = this.id,
                         Story_URL__c = this.url,
-                        Name__c = this.name
+                        Name__c = this.name,
+                        Pivotal_Project__r = new Pivotal_Project__c(Project_Id__c = this.project_id)
                     );
         }
 
