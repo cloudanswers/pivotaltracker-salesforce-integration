@@ -27,7 +27,7 @@ private class PivotalTrackerSyncTests {
 
 	@isTest static void itShouldEmailOnParseError() {
 		PivotalTracker t = new PivotalTracker('test', 123);
-		t.getOverride = '[{}]';
+		t.getOverride = '[{X}]';
 		PivotalTrackerSync s = new PivotalTrackerSync(t);
 		s.execute(null, new List<String>{'stories'});
 		s.finish(null);
