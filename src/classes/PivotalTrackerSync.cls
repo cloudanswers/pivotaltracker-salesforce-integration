@@ -13,19 +13,20 @@ global with sharing class PivotalTrackerSync implements Database.Batchable<Strin
     public List<String> errors = new List<String>();
 
     global PivotalTrackerSync(){
-        Pivotal_Tracker__c config = new Pivotal_Tracker__c(Name = 'default');
+        Pivotal_Tracker__c config = Pivotal_Tracker__c.getValues('default');
         if(config != NULL){
             PivotalTracker tracker = new PivotalTracker(config.API_Token__c);
-            PivotalTrackerSync p = new PivotalTrackerSync(tracker);
-            Database.executeBatch(p, 10);
+            this.tracker = tracker;
+            init();
+        }
+        else{
+            return;
         }
     }
 
-    global PivotalTrackerSync(PivotalTracker tracker) {
-        dmo = new Database.DMLOptions();
-        dmo.allowFieldTruncation = true;
+    global PivotalTrackerSync(PivotalTracker tracker) {       
         this.tracker = tracker;
-        initActions();
+        init();
     }
 
     global List<String> start(Database.BatchableContext BC) {
@@ -73,7 +74,7 @@ global with sharing class PivotalTrackerSync implements Database.Batchable<Strin
     }
 
     public static void sync(){
-        Pivotal_Tracker__c config = new Pivotal_Tracker__c(Name = 'default');
+        Pivotal_Tracker__c config = Pivotal_Tracker__c.getValues('default');
         if(config != NULL){
             Type t = Type.forName('PivotalTrackerSync'); 
             Database.Batchable<String> batchClass = ((Database.Batchable<String>) t.newInstance());
@@ -81,8 +82,10 @@ global with sharing class PivotalTrackerSync implements Database.Batchable<Strin
         }
     }
 
-    private void initActions(){
-    	actions = new List<String>();
+    private void init(){
+    	dmo = new Database.DMLOptions();
+        dmo.allowFieldTruncation = true;
+        actions = new List<String>();
     	if(tracker.isSyncAll()){
     		actions.add('projects');
     	}

@@ -22,7 +22,6 @@ private class PivotalTrackerTests {
     	t.getOverride = '[]';
     	System.assert(t.getProject().isEmpty());
     	System.assert(t.getLabels().isEmpty());
-    	t.getOverride = '{"data":[]}';
     	t.getStories();
     }
 }
