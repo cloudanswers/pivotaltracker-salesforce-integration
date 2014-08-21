@@ -1,9 +1,10 @@
 global with sharing class PivotalTracker {
-    private Boolean isAllProjectSync = false;
-    private static final integer STORY_LIMIT = 200;
-    private String apiToken;
-    private Integer projectId;
+    public String apiToken;
+    public Boolean isAllProjectSync = false;
     public List<Integer> projectIds;
+
+    private static final integer STORY_LIMIT = 200;
+    private Integer projectId;
     private Integer index = 0;
 
     //sync all the projects along with time enteries
