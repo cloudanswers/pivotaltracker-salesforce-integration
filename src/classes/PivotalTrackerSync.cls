@@ -37,9 +37,14 @@ global with sharing class PivotalTrackerSync implements Database.Batchable<Strin
     }
 
     global void execute(Database.BatchableContext BC, List<String> scope) {
-    	processScope(scope);
-    	processUpsertResults(stories, Database.upsert(stories, Pivotal_Story__c.Story_Id__c, false));
-    	processUpsertResults(projects, Database.upsert(projects, Pivotal_Project__c.Project_Id__c, false));
+    	try {
+            processScope(scope);
+        	processUpsertResults(stories, Database.upsert(stories, Pivotal_Story__c.Story_Id__c, false));
+        	processUpsertResults(projects, Database.upsert(projects, Pivotal_Project__c.Project_Id__c, false));
+        }
+        catch (Exception e) {
+            errors.add(e.getMessage() + ' => ' + e.getStackTraceString());
+        }
     }
 
     global void finish(Database.BatchableContext BC) {
