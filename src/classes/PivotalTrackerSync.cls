@@ -1,9 +1,5 @@
 global with sharing class PivotalTrackerSync implements Database.Batchable<String>, Database.Stateful, Database.AllowsCallouts {
-	public List<String> actions = new List<String>{
-        'projects',
-        'stories'
-    };
-
+	public List<String> actions;
     private Database.DMLOptions dmo;
     private PivotalTracker tracker;
     private Boolean storiesFinished = false;
@@ -19,6 +15,7 @@ global with sharing class PivotalTrackerSync implements Database.Batchable<Strin
         dmo = new Database.DMLOptions();
         dmo.allowFieldTruncation = true;
         this.tracker = tracker;
+        initActions();
     }
 
     global List<String> start(Database.BatchableContext BC) {
@@ -31,6 +28,7 @@ global with sharing class PivotalTrackerSync implements Database.Batchable<Strin
     global void execute(Database.BatchableContext BC, List<String> scope) {
     	processScope(scope);
     	processUpsertResults(stories, Database.upsert(stories, Pivotal_Story__c.Story_Id__c, false));
+    	processUpsertResults(projects, Database.upsert(projects, Pivotal_Project__c.Project_Id__c, false));
     }
 
     global void finish(Database.BatchableContext BC) {
@@ -64,6 +62,15 @@ global with sharing class PivotalTrackerSync implements Database.Batchable<Strin
         }
     }
 
+    private void initActions(){
+    	actions = new List<String>();
+    	if(tracker.isSyncAll()){
+    		actions.add('projects');
+    	}
+    	actions.add('stories');
+    
+    }
+
     private void sendErrorEmail() {
     	// if we have errors, stop scheduling new ones
         if (!errors.isEmpty()) {
@@ -89,11 +96,15 @@ global with sharing class PivotalTrackerSync implements Database.Batchable<Strin
     	stories.clear();
     	for (String s : scope) {
     		if(s == 'projects'){
-    			/*
+    			List<Integer> projectids = new List<Integer>();
     			for(PivotalTracker.PivotalTrackerProject ptp : tracker.getProject()){
-    				projects.add(ptp.toSobject());
+    				Pivotal_Project__c pp = ptp.toSobject();
+    				pp.setOptions(dmo);
+    				projectids.add(Integer.valueOf(pp.Project_Id__c));
+    				projects.add(pp);
     			}
-    			*/
+    			tracker.projectIds = projectIds;
+    			tracker.next();
     		}
     		else{
     			if(currentStoryResult == NULL){

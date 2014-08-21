@@ -1,9 +1,17 @@
 global with sharing class PivotalTracker {
+    private Boolean isAllProjectSync = false;
     private static final integer STORY_LIMIT = 200;
     private String apiToken;
     private Integer projectId;
-    private List<Integer> projectIds;
+    public List<Integer> projectIds;
     private Integer index = 0;
+
+    //sync all the projects along with time enteries
+    public PivotalTracker(String apiToken) {
+        this.apiToken = apiToken;
+        isAllProjectSync = true;
+    }
+
 
     public PivotalTracker(String apiToken, Integer projectId) {
         this.apiToken = apiToken;
@@ -37,6 +45,10 @@ global with sharing class PivotalTracker {
             get('https://www.pivotaltracker.com/services/v5/projects'),
             List<PivotalTrackerProject>.class
         );
+    }
+
+    public Boolean isSyncAll(){
+        return isAllProjectSync;
     }
 
     public Boolean hasNext(){
@@ -157,7 +169,6 @@ global with sharing class PivotalTracker {
         public Boolean automatic_planning;
         public Boolean enable_tasks;
         public Date start_date;
-        public String time_zone;
         public Integer velocity_averaged_over;
         public DateTime shown_iterations_start_time;
         public DateTime start_time;
