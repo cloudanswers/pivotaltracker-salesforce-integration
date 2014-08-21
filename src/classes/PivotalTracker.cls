@@ -1,5 +1,5 @@
 global with sharing class PivotalTracker {
-    private static final integer STORY_LIMIT = 50;
+    private static final integer STORY_LIMIT = 200;
     private String apiToken;
     private Integer projectId;
     private List<Integer> projectIds;
@@ -44,7 +44,7 @@ global with sharing class PivotalTracker {
     }
 
     public void next(){
-        if(index < projectIds.size()){
+        if(hasNext()){
             projectId = projectIds[index];
             index++;
         }
@@ -110,7 +110,8 @@ global with sharing class PivotalTracker {
                         Name = this.name,
                         Kind__c = this.kind,
                         Story_Id__c = this.id,
-                        Story_URL__c = this.url
+                        Story_URL__c = this.url,
+                        Name__c = this.name
                     );
         }
 
