@@ -124,6 +124,7 @@ global with sharing class PivotalTrackerSync implements Database.Batchable<Strin
     	for (String s : scope) {
     		if(s == 'projects'){
     			List<Integer> projectids = new List<Integer>();
+                //fetch all the projects
     			for(PivotalTracker.PivotalTrackerProject ptp : tracker.getProject()){
     				Pivotal_Project__c pp = ptp.toSobject();
     				pp.setOptions(dmo);
@@ -131,6 +132,7 @@ global with sharing class PivotalTrackerSync implements Database.Batchable<Strin
     				projects.add(pp);
     			}
     			tracker.projectIds = projectIds;
+                //move pointer to first project
     			tracker.next();
     		}
     		else{
