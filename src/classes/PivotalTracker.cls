@@ -41,7 +41,14 @@ global with sharing class PivotalTracker {
             );
     }
 
-    public List<PivotalTrackerProject> getProject(){
+    public List<PivotalTrackerMembership> getProjectMemberships(){
+        return (List<PivotalTrackerMembership>)JSON.deserialize(
+            get('https://www.pivotaltracker.com/services/v5/projects/'+projectId+'/memberships'),
+            List<PivotalTrackerMembership>.class
+        );
+    }
+
+    public List<PivotalTrackerProject> getProjects(){
         return (List<PivotalTrackerProject>)JSON.deserialize(
             get('https://www.pivotaltracker.com/services/v5/projects'),
             List<PivotalTrackerProject>.class
@@ -227,6 +234,29 @@ global with sharing class PivotalTracker {
                 Current_Velocity__c = this.current_velocity
             );
         } 
+    }
+
+    public class PivotalTrackerMembership {
+        public String kind;
+        public Integer id;
+        public PivotalTrackerPerson person;
+        public Integer account_id;
+        public String created_at;
+        public String updated_at;
+        public Boolean owner;
+        public Boolean admin;
+        public Boolean project_creator;
+        public Boolean timekeeper;
+        public Boolean time_enterer;
+    }
+
+    public class PivotalTrackerPerson {
+        public String kind;
+        public Integer id;
+        public String name;
+        public String email;
+        public String initials;
+        public String username;
     }
 
     public class PivotalTrackerEpic{
