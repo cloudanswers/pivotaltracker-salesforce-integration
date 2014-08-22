@@ -1,5 +1,7 @@
 global with sharing class PivotalTrackerSync implements Database.Batchable<String>, Database.Stateful, Database.AllowsCallouts {
 	public List<String> actions;
+    public List<String> errors = new List<String>();
+
     private Database.DMLOptions dmo;
     private PivotalTracker tracker;
     @TestVisible
@@ -10,7 +12,9 @@ global with sharing class PivotalTrackerSync implements Database.Batchable<Strin
     private PivotalTracker.PivotalTrackerStoryResult currentStoryResult;
     private List<Pivotal_Project__c> projects = new List<Pivotal_Project__c>();
     private List<Pivotal_Story__c> stories = new List<Pivotal_Story__c>();
-    public List<String> errors = new List<String>();
+    private Map<Integer,String> personMap = new Map<Integer,String>();
+
+
 
     global PivotalTrackerSync(){
         Pivotal_Tracker__c config = Pivotal_Tracker__c.getValues('default');
@@ -50,7 +54,8 @@ global with sharing class PivotalTrackerSync implements Database.Batchable<Strin
     global void finish(Database.BatchableContext BC) {
     	if ((storiesFinished || actions.size() >= 50) && tracker.hasNext() == false) {
             sendErrorEmail();
-        } else {
+        } 
+        else {
             if(tracker.hasNext()){
             	tracker.next();
             	currentStoryResult = null;
@@ -63,6 +68,13 @@ global with sharing class PivotalTrackerSync implements Database.Batchable<Strin
             while (p.actions.get(0) != 'stories') {
                 p.actions.remove(0);
             }
+            //if its a new project fetch persons
+            if(currentStoryResult == null){
+                List<String> actionsNew = new List<String>{'persons'};
+                actionsNew.addAll(p.actions);
+                p.actions = actionsNew;
+            }
+
             // double the number of time entries that we want to process for next time
             p.actions.addAll(actions);
             p.currentStoryResult = currentStoryResult;
@@ -94,6 +106,7 @@ global with sharing class PivotalTrackerSync implements Database.Batchable<Strin
     	if(tracker.isSyncAll()){
     		actions.add('projects');
     	}
+        actions.add('persons');
     	actions.add('stories');
     
     }
@@ -122,10 +135,15 @@ global with sharing class PivotalTrackerSync implements Database.Batchable<Strin
     	projects.clear();
     	stories.clear();
     	for (String s : scope) {
-    		if(s == 'projects'){
+    		if(s == 'persons'){
+                for(PivotalTracker.PivotalTrackerMembership ptm : tracker.getProjectMemberships()){
+                    personMap.put(ptm.person.id,ptm.person.name);
+                }
+            }
+            else if(s == 'projects'){
     			List<Integer> projectids = new List<Integer>();
                 //fetch all the projects
-    			for(PivotalTracker.PivotalTrackerProject ptp : tracker.getProject()){
+    			for(PivotalTracker.PivotalTrackerProject ptp : tracker.getProjects()){
     				Pivotal_Project__c pp = ptp.toSobject();
     				pp.setOptions(dmo);
     				projectids.add(Integer.valueOf(pp.Project_Id__c));
@@ -145,6 +163,7 @@ global with sharing class PivotalTrackerSync implements Database.Batchable<Strin
 
     			for(PivotalTracker.PivotalTrackerStory p : currentStoryResult.stories){
     				Pivotal_Story__c ps = p.toSobject();
+                    ps.Owners__c = getOwners(p);
     				ps.setOptions(dmo);
     				stories.add(ps);
     			}
@@ -152,6 +171,15 @@ global with sharing class PivotalTrackerSync implements Database.Batchable<Strin
     			storiesFinished = stories.isEmpty();
     		}
     	}
+    }
+
+    private String getOwners(PivotalTracker.PivotalTrackerStory p){
+        String s='';
+        for(Integer i : p.owner_ids){
+            s = (s =='' ? '' :s +  ',')+ (personMap.containsKey(i) ? personMap.get(i) : String.valueOf(i));
+        }
+
+        return s;
     }
 
     private void processUpsertResults(List<SObject> sobjs, List<Database.UpsertResult> upsertResults) {
