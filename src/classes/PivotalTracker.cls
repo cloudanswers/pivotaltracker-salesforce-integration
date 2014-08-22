@@ -111,6 +111,10 @@ global with sharing class PivotalTracker {
         public Integer owned_by_id;
 
         public Pivotal_Story__c toSobject(){
+            String labels ='';
+            for(PivotalTrackerLabel l : this.labels){
+                labels = (labels =='' ? '' :labels +  ',')+l.name;
+            }
             return new Pivotal_Story__c(
                         Accepted_at__c = this.accepted_at,
                         Created_At__c = this.created_at,
@@ -125,7 +129,8 @@ global with sharing class PivotalTracker {
                         Story_Id__c = this.id,
                         Story_URL__c = this.url,
                         Name__c = this.name,
-                        Pivotal_Project__r = new Pivotal_Project__c(Project_Id__c = this.project_id)
+                        Pivotal_Project__r = new Pivotal_Project__c(Project_Id__c = this.project_id),
+                        Labels__c = labels
                     );
         }
 
