@@ -28,7 +28,7 @@
                      password="${env.SALESFORCE_PASSWORD}"
                      serverurl="${env.SALESFORCE_URL}"
                      retrieveTarget="src"
-                     unpackaged="src/package.xml"/>
+                     packageNames="PivotalTracker Salesforce Integration"/>
     </target>
 
 </project>
