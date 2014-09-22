@@ -10,6 +10,8 @@ private class PivotalTrackerTests {
     	new PivotalTracker.PivotalTrackerProject();
     	new PivotalTracker.PivotalTrackerStoryResult();
     	new PivotalTracker.PivotalTrackerEpic();
+        new PivotalTracker.PivotalTrackerMembership();
+        new PivotalTracker.PivotalTrackerPerson();
     }
     @isTest
     static void togglObjectsShouldMakeSobjects() {
