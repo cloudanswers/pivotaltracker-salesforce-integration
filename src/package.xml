@@ -1,31 +1,96 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PivotalTracker Salesforce Integration</fullName>
     <types>
-        <members>*</members>
+        <members>PivotalTracker</members>
+        <members>PivotalTrackerSetup</members>
+        <members>PivotalTrackerSetupTests</members>
+        <members>PivotalTrackerSync</members>
+        <members>PivotalTrackerSyncScheduler</members>
+        <members>PivotalTrackerSyncTests</members>
+        <members>PivotalTrackerTests</members>
         <name>ApexClass</name>
     </types>
     <types>
-        <members>*</members>
-        <name>ApexComponent</name>
-    </types>
-    <types>
-        <members>*</members>
+        <members>PivotalTrackerSetup</members>
         <name>ApexPage</name>
     </types>
     <types>
-        <members>*</members>
-        <name>ApexTrigger</name>
+        <members>Pivotal_Tracker</members>
+        <name>CustomApplication</name>
     </types>
     <types>
-        <members>PivotalTracker__c</members>
+        <members>Pivotal_Project__c.Account_Id__c</members>
+        <members>Pivotal_Project__c.Atom_Enabled__c</members>
+        <members>Pivotal_Project__c.Automatic_Planning__c</members>
+        <members>Pivotal_Project__c.Bugs_and_Chores_are_Estimatable__c</members>
+        <members>Pivotal_Project__c.Created_At__c</members>
+        <members>Pivotal_Project__c.Current_Iteration_Number__c</members>
+        <members>Pivotal_Project__c.Current_Velocity__c</members>
+        <members>Pivotal_Project__c.Description__c</members>
+        <members>Pivotal_Project__c.Enable_Incoming_Emails__c</members>
+        <members>Pivotal_Project__c.Enable_Tasks__c</members>
+        <members>Pivotal_Project__c.Has_Google_Domain__c</members>
+        <members>Pivotal_Project__c.Initial_Velocity__c</members>
+        <members>Pivotal_Project__c.Iteration_Length__c</members>
+        <members>Pivotal_Project__c.Kind__c</members>
+        <members>Pivotal_Project__c.Number_of_Done_Iterations_to_Show__c</members>
+        <members>Pivotal_Project__c.Point_Scale_Is_Custom__c</members>
+        <members>Pivotal_Project__c.Point_Scale__c</members>
+        <members>Pivotal_Project__c.Profile_Content__c</members>
+        <members>Pivotal_Project__c.Project_Id__c</members>
+        <members>Pivotal_Project__c.Public__c</members>
+        <members>Pivotal_Project__c.Shown_Iterations_Start_Time__c</members>
+        <members>Pivotal_Project__c.Start_Date__c</members>
+        <members>Pivotal_Project__c.Start_Time__c</members>
+        <members>Pivotal_Project__c.Time_Zone__c</members>
+        <members>Pivotal_Project__c.Updated_At__c</members>
+        <members>Pivotal_Project__c.Velocity_Averaged_Over__c</members>
+        <members>Pivotal_Project__c.Version__c</members>
+        <members>Pivotal_Project__c.Week_Start_Day__c</members>
+        <members>Pivotal_Story__c.Accepted_at__c</members>
+        <members>Pivotal_Story__c.Created_At__c</members>
+        <members>Pivotal_Story__c.Current_State__c</members>
+        <members>Pivotal_Story__c.Deadline__c</members>
+        <members>Pivotal_Story__c.Description__c</members>
+        <members>Pivotal_Story__c.Estimate__c</members>
+        <members>Pivotal_Story__c.External_Id__c</members>
+        <members>Pivotal_Story__c.Integration_Id__c</members>
+        <members>Pivotal_Story__c.Kind__c</members>
+        <members>Pivotal_Story__c.Labels__c</members>
+        <members>Pivotal_Story__c.Name__c</members>
+        <members>Pivotal_Story__c.Owners__c</members>
+        <members>Pivotal_Story__c.Pivotal_Project__c</members>
+        <members>Pivotal_Story__c.Project_Id__c</members>
+        <members>Pivotal_Story__c.Requested_by_Id__c</members>
+        <members>Pivotal_Story__c.Story_Id__c</members>
+        <members>Pivotal_Story__c.Story_Type__c</members>
+        <members>Pivotal_Story__c.Story_Url__c</members>
+        <members>Pivotal_Story__c.Updated_At__c</members>
+        <members>Pivotal_Tracker__c.API_Token__c</members>
+        <name>CustomField</name>
+    </types>
+    <types>
         <members>Pivotal_Project__c</members>
         <members>Pivotal_Story__c</members>
         <members>Pivotal_Tracker__c</members>
         <name>CustomObject</name>
     </types>
     <types>
-        <members>*</members>
-        <name>StaticResource</name>
+        <members>Pivotal_Project__c</members>
+        <members>Pivotal_Story__c</members>
+        <members>Pivotal_Tracker_Setup</members>
+        <name>CustomTab</name>
     </types>
-    <version>28.0</version>
+    <types>
+        <members>Pivotal_Project__c-Project Layout</members>
+        <members>Pivotal_Story__c-Story Layout</members>
+        <name>Layout</name>
+    </types>
+    <types>
+        <members>Pivotal_Project__c.All</members>
+        <members>Pivotal_Story__c.All</members>
+        <name>ListView</name>
+    </types>
+    <version>30.0</version>
 </Package>

@@ -10,6 +10,7 @@
         <label>API Token</label>
         <length>255</length>
         <required>true</required>
+        <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
     </fields>
