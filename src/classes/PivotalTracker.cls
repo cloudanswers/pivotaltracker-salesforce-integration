@@ -119,9 +119,12 @@ global with sharing class PivotalTracker {
 
         public Pivotal_Story__c toSobject(){
             String labels ='';
-            for(PivotalTrackerLabel l : this.labels){
-                labels = (labels =='' ? '' :labels +  ',')+l.name;
+            if(this.labels != NULL){
+                for(PivotalTrackerLabel l : this.labels){
+                    labels = (labels =='' ? '' :labels +  ',')+l.name;
+                }
             }
+            
             return new Pivotal_Story__c(
                         Accepted_at__c = this.accepted_at,
                         Created_At__c = this.created_at,
