@@ -20,7 +20,7 @@ private class PivotalTrackerTests {
     static void getMethodsShouldWorkWithEmptyLists() {
     	PivotalTracker t = new PivotalTracker('test', 123);
     	t.getOverride = '[]';
-    	System.assert(t.getProject().isEmpty());
+    	System.assert(t.getProjects().isEmpty());
     	System.assert(t.getLabels().isEmpty());
     	t.getStories();
     }
