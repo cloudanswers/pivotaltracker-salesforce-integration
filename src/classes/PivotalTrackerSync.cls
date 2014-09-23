@@ -1,5 +1,5 @@
 global with sharing class PivotalTrackerSync implements Database.Batchable<String>, Database.Stateful, Database.AllowsCallouts {
-	public List<String> actions;
+    public List<String> actions;
     public List<String> errors = new List<String>();
 
     private Database.DMLOptions dmo;
@@ -12,23 +12,21 @@ global with sharing class PivotalTrackerSync implements Database.Batchable<Strin
     private PivotalTracker.PivotalTrackerStoryResult currentStoryResult;
     private List<Pivotal_Project__c> projects = new List<Pivotal_Project__c>();
     private List<Pivotal_Story__c> stories = new List<Pivotal_Story__c>();
-    private Map<Integer,String> personMap = new Map<Integer,String>();
+    private Map<Integer, String> personMap = new Map<Integer, String>();
 
-
-
-    global PivotalTrackerSync(){
+    global PivotalTrackerSync() {
         // currently only supporting one pivotaltracker token
         // but setting is list so we can handle more if we need in the future
         Pivotal_Tracker__c config = Pivotal_Tracker__c.getValues('default');
-        if(config != NULL){
+        if (config != NULL) {
             this.tracker = new PivotalTracker(config.API_Token__c);
             init();
-        } else{
+        } else {
             return;
         }
     }
 
-    global PivotalTrackerSync(PivotalTracker tracker) {       
+    global PivotalTrackerSync(PivotalTracker tracker) {
         this.tracker = tracker;
         init();
     }
@@ -38,24 +36,22 @@ global with sharing class PivotalTrackerSync implements Database.Batchable<Strin
     }
 
     global void execute(Database.BatchableContext BC, List<String> scope) {
-    	try {
+        try {
             processScope(scope);
-        	processUpsertResults(stories, Database.upsert(stories, Pivotal_Story__c.Story_Id__c, false));
-        	processUpsertResults(projects, Database.upsert(projects, Pivotal_Project__c.Project_Id__c, false));
-        }
-        catch (Exception e) {
+            processUpsertResults(stories, Database.upsert(stories, Pivotal_Story__c.Story_Id__c, false));
+            processUpsertResults(projects, Database.upsert(projects, Pivotal_Project__c.Project_Id__c, false));
+        } catch (Exception e) {
             errors.add(e.getMessage() + ' => ' + e.getStackTraceString());
         }
     }
 
     global void finish(Database.BatchableContext BC) {
-    	if ((storiesFinished || actions.size() >= 50) && tracker.hasNext() == false) {
+        if ((storiesFinished || actions.size() >= 50) && tracker.hasNext() == false) {
             sendErrorEmail();
-        } 
-        else {
-            if(tracker.hasNext()){
-            	tracker.next();
-            	currentStoryResult = null;
+        } else {
+            if (tracker.hasNext()) {
+                tracker.next();
+                currentStoryResult = null;
             }
 
             PivotalTrackerSync p = new PivotalTrackerSync(tracker);
@@ -66,8 +62,8 @@ global with sharing class PivotalTrackerSync implements Database.Batchable<Strin
                 p.actions.remove(0);
             }
             //if its a new project fetch persons
-            if(currentStoryResult == null){
-                List<String> actionsNew = new List<String>{'persons'};
+            if (currentStoryResult == null) {
+                List<String> actionsNew = new List<String> {'persons'};
                 actionsNew.addAll(p.actions);
                 p.actions = actionsNew;
             }
@@ -80,31 +76,31 @@ global with sharing class PivotalTrackerSync implements Database.Batchable<Strin
             if (Test.isRunningTest()) {
                 didScheduleAdditionalBatch = true;
             } else {
-                // WARNING should only do batch size of 10 so we stay under 
+                // WARNING should only do batch size of 10 so we stay under
                 // the per transaction govorner for callouts
                 Database.executeBatch(p, 10);
             }
         }
     }
 
-    public static void sync(){
+    public static void sync() {
         Pivotal_Tracker__c config = Pivotal_Tracker__c.getValues('default');
-        if(config != NULL){
-            Type t = Type.forName('PivotalTrackerSync'); 
+        if (config != NULL) {
+            Type t = Type.forName('PivotalTrackerSync');
             Database.Batchable<String> batchClass = ((Database.Batchable<String>) t.newInstance());
-            Database.executeBatch(batchClass,10);
+            Database.executeBatch(batchClass, 10);
         }
     }
 
-    private void init(){
-    	dmo = new Database.DMLOptions();
+    private void init() {
+        dmo = new Database.DMLOptions();
         dmo.allowFieldTruncation = true;
         actions = new List<String>();
-    	if(tracker.isSyncAll()){
-    		actions.add('projects');
-    	}
+        if (tracker.isSyncAll()) {
+            actions.add('projects');
+        }
         actions.add('persons');
-    	actions.add('stories');
+        actions.add('stories');
         // pad with a realistic number of stories
         while (actions.size() < 20) {
             actions.add('stories');
@@ -112,78 +108,75 @@ global with sharing class PivotalTrackerSync implements Database.Batchable<Strin
     }
 
     private void sendErrorEmail() {
-    	// if we have errors, stop scheduling new ones
+        // if we have errors, stop scheduling new ones
         if (!errors.isEmpty()) {
             Messaging.reserveSingleEmailCapacity(1);
             Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
-            mail.setToAddresses(new List<String>{UserInfo.getUserEmail()});
+            mail.setToAddresses(new List<String> {UserInfo.getUserEmail()});
             mail.setReplyTo(UserInfo.getUserEmail());
             mail.setSenderDisplayName('Pivotal Salesforce Sync');
             mail.setSubject('Pivotal Salesforce Sync Errors');
             String body = 'Errors: ';
-            System.debug('XXXXXXX:'+errors);
+            System.debug('XXXXXXX:' + errors);
             for (String e : errors) {
                 body += '\n - ' + e;
             }
             mail.setPlainTextBody(body);
-            Messaging.sendEmail(new List<Messaging.SingleEmailMessage>{mail});
+            Messaging.sendEmail(new List<Messaging.SingleEmailMessage> {mail});
             return;
         }
     }
 
     private void processScope(List<String> scope) {
-    	projects.clear();
-    	stories.clear();
-    	for (String s : scope) {
-    		if(s == 'persons'){
-                for(PivotalTracker.PivotalTrackerMembership ptm : tracker.getProjectMemberships()){
-                    personMap.put(ptm.person.id,ptm.person.name);
+        projects.clear();
+        stories.clear();
+        for (String s : scope) {
+            if (s == 'persons') {
+                for (PivotalTracker.PivotalTrackerMembership ptm : tracker.getProjectMemberships()) {
+                    personMap.put(ptm.person.id, ptm.person.name);
                 }
-            }
-            else if(s == 'projects'){
-    			List<Integer> projectids = new List<Integer>();
+            } else if (s == 'projects') {
+                List<Integer> projectids = new List<Integer>();
                 //fetch all the projects
-    			for(PivotalTracker.PivotalTrackerProject ptp : tracker.getProjects()){
-    				Pivotal_Project__c pp = ptp.toSobject();
-    				pp.setOptions(dmo);
-    				projectids.add(Integer.valueOf(pp.Project_Id__c));
-    				projects.add(pp);
-    			}
-    			tracker.projectIds = projectIds;
+                for (PivotalTracker.PivotalTrackerProject ptp : tracker.getProjects()) {
+                    Pivotal_Project__c pp = ptp.toSobject();
+                    pp.setOptions(dmo);
+                    projectids.add(Integer.valueOf(pp.Project_Id__c));
+                    projects.add(pp);
+                }
+                tracker.projectIds = projectIds;
                 //move pointer to first project
-    			tracker.next();
-    		}
-    		else{
-    			if(currentStoryResult == NULL){
-    				currentStoryResult = tracker.getStories();
-    			}
-    			else{
-    				currentStoryResult = currentStoryResult.next();
-    			}
+                tracker.next();
+            } else {
+                if (currentStoryResult == NULL) {
+                    currentStoryResult = tracker.getStories();
+                } else {
+                    currentStoryResult = currentStoryResult.next();
+                }
 
-    			for(PivotalTracker.PivotalTrackerStory p : currentStoryResult.stories){
-    				Pivotal_Story__c ps = p.toSobject();
+                for (PivotalTracker.PivotalTrackerStory p : currentStoryResult.stories) {
+                    Pivotal_Story__c ps = p.toSobject();
                     ps.Owners__c = getOwners(p);
-    				ps.setOptions(dmo);
-    				stories.add(ps);
-    			}
+                    ps.setOptions(dmo);
+                    stories.add(ps);
+                }
 
-    			storiesFinished = stories.isEmpty();
-    		}
-    	}
+                storiesFinished = stories.isEmpty();
+            }
+        }
     }
 
-    private String getOwners(PivotalTracker.PivotalTrackerStory p){
-        String s='';
-        for(Integer i : p.owner_ids){
-            s = (s =='' ? '' :s +  ',')+ (personMap.containsKey(i) ? personMap.get(i) : String.valueOf(i));
+    private String getOwners(PivotalTracker.PivotalTrackerStory p) {
+        String s = '';
+        for (Integer i : p.owner_ids) {
+            s = (s == '' ? '' : s +  ',') + (personMap.containsKey(i) ? personMap.get(i) : String.valueOf(i));
         }
 
         return s;
     }
 
     private void processUpsertResults(List<SObject> sobjs, List<Database.UpsertResult> upsertResults) {
-        for (Integer i=0; i<upsertResults.size(); i++) {
+        for (Integer i = 0; i < upsertResults.size(); i++) {
             if (!upsertResults[i].isSuccess()) {
                 errors.add('' + sobjs[i] + ' => ' + upsertResults[i].getErrors());
             }
