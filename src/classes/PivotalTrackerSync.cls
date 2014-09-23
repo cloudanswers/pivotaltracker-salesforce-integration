@@ -65,7 +65,8 @@ global with sharing class PivotalTrackerSync implements Database.Batchable<Strin
         // resubmit this batch to sync more stories
         if (currentStoryResult != null && !currentStoryResult.stories.isEmpty()) {
             Integer oldActionsSize = actions.size();
-            actions.clear();
+            actions = new List<String>();
+            //actions.clear(); // just doing clear makes the same batch run over and over and never progress
             while (actions.size() < oldActionsSize * 2) {
                 actions.add('stories');
             }
@@ -80,6 +81,8 @@ global with sharing class PivotalTrackerSync implements Database.Batchable<Strin
         if (currentStoryResult != null && currentStoryResult.stories.isEmpty() && !projectIdsToProcess.isEmpty()) {
             currentProjectId = projectIdsToProcess.remove(0);
             currentStoryResult = null;
+            actions = new List<String>();
+            //actions.clear(); // just doing clear makes the same batch run over and over and never progress
             actions.add('persons');
             while (actions.size() < 20) {
                 actions.add('stories');
