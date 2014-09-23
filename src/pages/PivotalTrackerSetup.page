@@ -1,8 +1,8 @@
 <apex:page controller="PivotalTrackerSetup">
     <apex:form >
         <apex:sectionHeader title="PivotalTracker Salesforce Sync" subtitle="Setup"/>
+        <apex:pageMessages/>
         <apex:pageBlock >
-            <apex:pageMessages ></apex:pageMessages>
             <apex:pageBlockButtons >
                 <apex:commandButton value="Run Sync Now" action="{!sync}" immediate="true"/>
                 <apex:commandButton value="Update Token" action="{!save}"/>
