@@ -32,26 +32,25 @@ global with sharing class PivotalTracker {
         return res.next();
     }
 
-
     public List<PivotalTrackerLabel> getLabels() {
         return (List<PivotalTrackerLabel>) JSON.deserialize(
-                   get('https://www.pivotaltracker.com/services/v5/projects/' + projectId + '/labels'),
-                   List<PivotalTrackerLabel>.class
-               );
+            get('https://www.pivotaltracker.com/services/v5/projects/' + projectId + '/labels'),
+            List<PivotalTrackerLabel>.class
+        );
     }
 
     public List<PivotalTrackerMembership> getProjectMemberships() {
         return (List<PivotalTrackerMembership>)JSON.deserialize(
-                   get('https://www.pivotaltracker.com/services/v5/projects/' + projectId + '/memberships'),
-                   List<PivotalTrackerMembership>.class
-               );
+            get('https://www.pivotaltracker.com/services/v5/projects/' + projectId + '/memberships'),
+            List<PivotalTrackerMembership>.class
+        );
     }
 
     public List<PivotalTrackerProject> getProjects() {
         return (List<PivotalTrackerProject>)JSON.deserialize(
-                   get('https://www.pivotaltracker.com/services/v5/projects'),
-                   List<PivotalTrackerProject>.class
-               );
+            get('https://www.pivotaltracker.com/services/v5/projects'),
+            List<PivotalTrackerProject>.class
+        );
     }
 
     public Boolean isSyncAll() {
