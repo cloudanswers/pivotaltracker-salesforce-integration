@@ -4,11 +4,14 @@
         <apex:pageMessages/>
         <apex:pageBlock >
             <apex:pageBlockButtons >
-                <apex:commandButton value="Run Sync Now" action="{!sync}" immediate="true"/>
-                <apex:commandButton value="Update Token" action="{!save}"/>
+                <apex:commandButton value="Run Sync Now" action="{!sync}" rendered="{!NOT(editMode)}"/>
+                <apex:commandButton value="Update Token" action="{!edit}" rendered="{!NOT(editMode)}"/>
+                <apex:commandButton value="Save" action="{!save}" rendered="{!editMode}"/>
+                <apex:commandButton value="Cancel" action="{!edit}" rendered="{!editMode}"/>
             </apex:pageBlockButtons>
             <apex:pageBlockSection columns="1">
-                <apex:inputField value="{!config.API_Token__c}"/>
+                <apex:inputSecret label="API Token" value="{!config.API_Token__c}" rendered="{!editMode}"/>
+                <apex:outputText label="API Token" value="{!IF(ISBLANK(config.API_Token__c), '', '********')}" rendered="{!NOT(editMode)}"/>
             </apex:pageBlockSection>
         </apex:pageBlock>
     </apex:form>
