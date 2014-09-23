@@ -148,19 +148,16 @@ global with sharing class PivotalTracker {
 
     public class PivotalTrackerStoryResult{
         public List<PivotalTrackerStory> stories;
-        //variable for maintaining state
         public Integer offset = 0;
         public PivotalTracker tracker;
         public Integer projectId;
-
-
         public PivotalTrackerStoryResult next() {
+            String url = 'https://www.pivotaltracker.com/services/v5/projects/'+projectId+'/stories?limit='+STORY_LIMIT+'&offset='+offset;
             stories = (List<PivotalTrackerStory>)JSON.deserialize(
-                            tracker.get('https://www.pivotaltracker.com/services/v5/projects/'+projectId+'/stories?limit='+STORY_LIMIT+'&offset='+offset), 
+                tracker.get(url), 
                             List<PivotalTrackerStory>.class
                         );
             offset = offset + STORY_LIMIT;
-
             return this;
         }
     }
