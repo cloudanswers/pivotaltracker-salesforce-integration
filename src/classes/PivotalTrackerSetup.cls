@@ -1,4 +1,4 @@
-public class PivotalTrackerSetup {
+public with sharing class PivotalTrackerSetup {
     public Pivotal_Tracker__c config {get; set;}
     public Boolean editMode {get; set;}
 
