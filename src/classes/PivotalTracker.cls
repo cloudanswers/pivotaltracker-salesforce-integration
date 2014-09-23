@@ -3,7 +3,7 @@ global with sharing class PivotalTracker {
     public Boolean isAllProjectSync = false;
     public List<Integer> projectIds;
 
-    private static final integer STORY_LIMIT = 200;
+    private static final integer STORY_LIMIT = 100;
     private Integer projectId;
     private Integer index = 0;
 
