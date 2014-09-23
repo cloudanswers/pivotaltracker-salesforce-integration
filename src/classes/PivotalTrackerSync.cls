@@ -17,13 +17,13 @@ global with sharing class PivotalTrackerSync implements Database.Batchable<Strin
 
 
     global PivotalTrackerSync(){
+        // currently only supporting one pivotaltracker token
+        // but setting is list so we can handle more if we need in the future
         Pivotal_Tracker__c config = Pivotal_Tracker__c.getValues('default');
         if(config != NULL){
-            PivotalTracker tracker = new PivotalTracker(config.API_Token__c);
-            this.tracker = tracker;
+            this.tracker = new PivotalTracker(config.API_Token__c);
             init();
-        }
-        else{
+        } else{
             return;
         }
     }
