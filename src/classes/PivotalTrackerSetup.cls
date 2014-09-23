@@ -12,6 +12,7 @@ public class PivotalTrackerSetup {
     public void sync(){
         if(String.isNotBlank(config.API_Token__c)){
             PivotalTrackerSync.sync();
+            ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.INFO, 'Synchronization started'));
         }
     }
     
