@@ -4,12 +4,20 @@ global with sharing class PivotalTrackerSync implements Database.Batchable<Strin
 
     private Database.DMLOptions dmo;
     private PivotalTracker tracker;
+
     @TestVisible
     private Boolean storiesFinished = false;
     @TestVisible
     private Boolean didScheduleAdditionalBatch;
 
+    // state for stories downloads since they are paginated
+    @TestVisible
     private PivotalTracker.PivotalTrackerStoryResult currentStoryResult;
+    @TestVisible
+    private List<Integer> projectIdsToProcess = new List<Integer>();
+    @TestVisible
+    private Integer currentProjectId;
+
     private List<Pivotal_Project__c> projects = new List<Pivotal_Project__c>();
     private List<Pivotal_Story__c> stories = new List<Pivotal_Story__c>();
     private Map<Integer, String> personMap = new Map<Integer, String>();
@@ -46,41 +54,41 @@ global with sharing class PivotalTrackerSync implements Database.Batchable<Strin
     }
 
     global void finish(Database.BatchableContext BC) {
-        if ((storiesFinished || actions.size() >= 50) && tracker.hasNext() == false) {
-            sendErrorEmail();
-        } else {
-            if (tracker.hasNext()) {
-                tracker.next();
-                currentStoryResult = null;
-            }
 
-            PivotalTrackerSync p = new PivotalTrackerSync(tracker);
-            p.actions = actions.clone();
-            // remove the sync actions not related to the time entries
-            // because only stories can be continued
-            while (p.actions.get(0) != 'stories') {
-                p.actions.remove(0);
-            }
-            //if its a new project fetch persons
-            if (currentStoryResult == null) {
-                List<String> actionsNew = new List<String> {'persons'};
-                actionsNew.addAll(p.actions);
-                p.actions = actionsNew;
-            }
+        // this should detect run-away, but it seems like it looks like we should use !storiesFinished instead
+        //if ((storiesFinished || actions.size() >= 50) && tracker.hasNext() == false) {
+        //    sendErrorEmail();
+        //    return;
+        //}
 
-            // double the number of time entries that we want to process for next time
-            p.actions.addAll(actions);
-            p.currentStoryResult = currentStoryResult;
-            p.errors = errors;
-
-            if (Test.isRunningTest()) {
-                didScheduleAdditionalBatch = true;
-            } else {
-                // WARNING should only do batch size of 10 so we stay under
-                // the per transaction govorner for callouts in case there
-                // are other callouts on these records when we dml them
-                Database.executeBatch(p, 10);
+        // not done syncing stories for this project,
+        // resubmit this batch to sync more stories
+        if (currentStoryResult != null && !currentStoryResult.stories.isEmpty()) {
+            Integer oldActionsSize = actions.size();
+            actions.clear();
+            while (actions.size() < oldActionsSize * 2) {
+                actions.add('stories');
             }
+            didScheduleAdditionalBatch = true;
+            if (!Test.isRunningTest()) {
+                Database.executeBatch(this, 10);
+            }
+            return;
+        }
+
+        // done syncing this project, schedule next batch with next project
+        if (currentStoryResult != null && currentStoryResult.stories.isEmpty() && !projectIdsToProcess.isEmpty()) {
+            currentProjectId = projectIdsToProcess.remove(0);
+            currentStoryResult = null;
+            actions.add('persons');
+            while (actions.size() < 20) {
+                actions.add('stories');
+            }
+            didScheduleAdditionalBatch = true;
+            if (!Test.isRunningTest()) {
+                Database.executeBatch(this, 10);
+            }
+            return;
         }
     }
 
@@ -97,9 +105,7 @@ global with sharing class PivotalTrackerSync implements Database.Batchable<Strin
         dmo = new Database.DMLOptions();
         dmo.allowFieldTruncation = true;
         actions = new List<String>();
-        if (tracker.isSyncAll()) {
-            actions.add('projects');
-        }
+        actions.add('projects');
         actions.add('persons');
         actions.add('stories');
         // pad with a realistic number of stories
@@ -108,6 +114,7 @@ global with sharing class PivotalTrackerSync implements Database.Batchable<Strin
         }
     }
 
+    @TestVisible
     private void sendErrorEmail() {
         // if we have errors, stop scheduling new ones
         if (!errors.isEmpty()) {
@@ -133,24 +140,23 @@ global with sharing class PivotalTrackerSync implements Database.Batchable<Strin
         stories.clear();
         for (String s : scope) {
             if (s == 'persons') {
-                for (PivotalTracker.PivotalTrackerMembership ptm : tracker.getProjectMemberships()) {
+                for (PivotalTracker.PivotalTrackerMembership ptm : tracker.getProjectMemberships(currentProjectId)) {
                     personMap.put(ptm.person.id, ptm.person.name);
                 }
             } else if (s == 'projects') {
-                List<Integer> projectids = new List<Integer>();
-                //fetch all the projects
                 for (PivotalTracker.PivotalTrackerProject ptp : tracker.getProjects()) {
                     Pivotal_Project__c pp = ptp.toSobject();
                     pp.setOptions(dmo);
-                    projectids.add(Integer.valueOf(pp.Project_Id__c));
+                    projectIdsToProcess.add(Integer.valueOf(pp.Project_Id__c));
                     projects.add(pp);
                 }
-                tracker.projectIds = projectIds;
-                //move pointer to first project
-                tracker.next();
-            } else {
+                // set first project to process
+                if (!projectIdsToProcess.isEmpty()) {
+                    currentProjectId = projectIdsToProcess.remove(0);
+                }
+            } else if (s == 'stories') {
                 if (currentStoryResult == NULL) {
-                    currentStoryResult = tracker.getStories();
+                    currentStoryResult = tracker.getStories(currentProjectId);
                 } else {
                     currentStoryResult = currentStoryResult.next();
                 }
@@ -161,8 +167,6 @@ global with sharing class PivotalTrackerSync implements Database.Batchable<Strin
                     ps.setOptions(dmo);
                     stories.add(ps);
                 }
-
-                storiesFinished = stories.isEmpty();
             }
         }
     }

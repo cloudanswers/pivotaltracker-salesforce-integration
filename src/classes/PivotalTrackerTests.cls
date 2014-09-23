@@ -3,8 +3,6 @@ private class PivotalTrackerTests {
 	@isTest
     static void itShouldInitialize() {
     	new PivotalTracker('test');
-    	new PivotalTracker('test', 123);
-    	new PivotalTracker('test', new List<Integer>{});
     	new PivotalTracker.PivotalTrackerStory();
     	new PivotalTracker.PivotalTrackerLabel();
     	new PivotalTracker.PivotalTrackerProject();
@@ -20,10 +18,10 @@ private class PivotalTrackerTests {
     }
     @isTest
     static void getMethodsShouldWorkWithEmptyLists() {
-    	PivotalTracker t = new PivotalTracker('test', 123);
+    	PivotalTracker t = new PivotalTracker('test');
     	t.getOverride = '[]';
     	System.assert(t.getProjects().isEmpty());
-    	System.assert(t.getLabels().isEmpty());
-    	t.getStories();
+    	System.assert(t.getLabels(1).isEmpty());
+    	System.assert(t.getStories(1).stories.isEmpty());
     }
 }

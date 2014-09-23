@@ -1,45 +1,26 @@
 global with sharing class PivotalTracker {
     public String apiToken;
-    public Boolean isAllProjectSync = false;
-    public List<Integer> projectIds;
-
     private static final integer STORY_LIMIT = 100;
-    private Integer projectId;
-    private Integer index = 0;
 
-    //sync all the projects along with time enteries
     public PivotalTracker(String apiToken) {
         this.apiToken = apiToken;
-        isAllProjectSync = true;
     }
 
-    public PivotalTracker(String apiToken, Integer projectId) {
-        this.apiToken = apiToken;
-        this.projectIds = new List<Integer> {projectId};
-        next();
-    }
-
-    public PivotalTracker(String apiToken, List<Integer> projectIds) {
-        this.apiToken = apiToken;
-        this.projectIds = projectIds;
-        next();
-    }
-
-    public PivotalTrackerStoryResult getStories() {
+    public PivotalTrackerStoryResult getStories(Integer projectId) {
         PivotalTrackerStoryResult res = new PivotalTrackerStoryResult();
-        res.projectId = this.projectId;
+        res.projectId = projectId;
         res.tracker = this;
         return res.next();
     }
 
-    public List<PivotalTrackerLabel> getLabels() {
+    public List<PivotalTrackerLabel> getLabels(Integer projectId) {
         return (List<PivotalTrackerLabel>) JSON.deserialize(
             get('https://www.pivotaltracker.com/services/v5/projects/' + projectId + '/labels'),
             List<PivotalTrackerLabel>.class
         );
     }
 
-    public List<PivotalTrackerMembership> getProjectMemberships() {
+    public List<PivotalTrackerMembership> getProjectMemberships(Integer projectId) {
         return (List<PivotalTrackerMembership>)JSON.deserialize(
             get('https://www.pivotaltracker.com/services/v5/projects/' + projectId + '/memberships'),
             List<PivotalTrackerMembership>.class
@@ -51,21 +32,6 @@ global with sharing class PivotalTracker {
             get('https://www.pivotaltracker.com/services/v5/projects'),
             List<PivotalTrackerProject>.class
         );
-    }
-
-    public Boolean isSyncAll() {
-        return isAllProjectSync;
-    }
-
-    public Boolean hasNext() {
-        return (index < projectIds.size());
-    }
-
-    public void next() {
-        if (hasNext()) {
-            projectId = projectIds[index];
-            index++;
-        }
     }
 
     // helpers
@@ -122,22 +88,22 @@ global with sharing class PivotalTracker {
             }
 
             return new Pivotal_Story__c(
-                       Accepted_at__c = this.accepted_at,
-                       Created_At__c = this.created_at,
-                       Updated_At__c = this.updated_at,
-                       Current_State__c = this.current_state,
-                       Description__c = this.description,
-                       Estimate__c = this.estimate,
-                       Project_Id__c = this.project_id,
-                       Story_Type__c = this.story_type,
-                       Name = this.name,
-                       Kind__c = this.kind,
-                       Story_Id__c = this.id,
-                       Story_URL__c = this.url,
-                       Name__c = this.name,
-                       Pivotal_Project__r = new Pivotal_Project__c(Project_Id__c = this.project_id),
-                       Labels__c = labels
-                   );
+                Accepted_at__c = this.accepted_at,
+                Created_At__c = this.created_at,
+                Updated_At__c = this.updated_at,
+                Current_State__c = this.current_state,
+                Description__c = this.description,
+                Estimate__c = this.estimate,
+                Project_Id__c = this.project_id,
+                Story_Type__c = this.story_type,
+                Name = this.name,
+                Kind__c = this.kind,
+                Story_Id__c = this.id,
+                Story_URL__c = this.url,
+                Name__c = this.name,
+                Pivotal_Project__r = new Pivotal_Project__c(Project_Id__c = this.project_id),
+                Labels__c = labels
+            );
         }
 
     }
@@ -150,9 +116,9 @@ global with sharing class PivotalTracker {
         public PivotalTrackerStoryResult next() {
             String url = 'https://www.pivotaltracker.com/services/v5/projects/' + projectId + '/stories?limit=' + STORY_LIMIT + '&offset=' + offset;
             stories = (List<PivotalTrackerStory>)JSON.deserialize(
-                          tracker.get(url),
-                          List<PivotalTrackerStory>.class
-                      );
+                tracker.get(url),
+                List<PivotalTrackerStory>.class
+            );
             offset = offset + STORY_LIMIT;
             return this;
         }
