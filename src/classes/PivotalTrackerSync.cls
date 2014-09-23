@@ -34,9 +34,6 @@ global with sharing class PivotalTrackerSync implements Database.Batchable<Strin
     }
 
     global List<String> start(Database.BatchableContext BC) {
-        while (actions.size() < 10) {
-            actions.add(actions[actions.size()-1]);
-        }
         return actions;
     }
 
@@ -108,7 +105,10 @@ global with sharing class PivotalTrackerSync implements Database.Batchable<Strin
     	}
         actions.add('persons');
     	actions.add('stories');
-    
+        // pad with a realistic number of stories
+        while (actions.size() < 20) {
+            actions.add('stories');
+        }
     }
 
     private void sendErrorEmail() {
