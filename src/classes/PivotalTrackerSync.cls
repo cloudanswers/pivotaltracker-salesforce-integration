@@ -77,7 +77,8 @@ global with sharing class PivotalTrackerSync implements Database.Batchable<Strin
                 didScheduleAdditionalBatch = true;
             } else {
                 // WARNING should only do batch size of 10 so we stay under
-                // the per transaction govorner for callouts
+                // the per transaction govorner for callouts in case there
+                // are other callouts on these records when we dml them
                 Database.executeBatch(p, 10);
             }
         }
