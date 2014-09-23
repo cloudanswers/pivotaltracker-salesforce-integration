@@ -7,6 +7,8 @@ Created by [CloudAnswers](http://www.cloudanswers.com) to better manage our inte
 
 [ ![Codeship Status for cloudanswers/pivotaltracker-salesforce-integration](https://codeship.io/projects/58ab0f50-82d1-0131-289f-02d019ac735f/status)](https://codeship.io/projects/14892)
 
+**This package has been submitted as a managed package on the AppExchange, so you can install it from there soon!**
+
 license
 -------
 
